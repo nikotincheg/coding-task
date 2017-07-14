@@ -5,6 +5,7 @@ import java.util.Scanner;
 import com.onikitich.predicate.EmptyInputDataPredicate;
 import com.onikitich.predicate.ExitCommandPredicate;
 import com.onikitich.predicate.NewCommandPredicate;
+import com.onikitich.purchase.PurchasesProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
