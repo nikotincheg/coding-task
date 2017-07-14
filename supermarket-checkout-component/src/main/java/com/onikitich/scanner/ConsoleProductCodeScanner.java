@@ -1,7 +1,7 @@
 package com.onikitich.scanner;
 
-import java.util.Scanner;
-
+import com.onikitich.console.ConsoleInputLineReader;
+import com.onikitich.console.ConsoleOutputMessageWriter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +12,11 @@ import static com.onikitich.scanner.ScannerType.CONSOLE;
 @RequiredArgsConstructor
 public class ConsoleProductCodeScanner implements ProductCodeScanner {
 
-    private final Scanner consoleInputScanner;
+    private final ConsoleInputLineReader consoleInputLineReader;
+    private final ConsoleOutputMessageWriter consoleOutputMessageWriter;
 
     public String scanCode() {
-        System.out.println("Scanning...");
-        return consoleInputScanner.nextLine();
+        consoleOutputMessageWriter.writeInfoMessage("Scanning...");
+        return consoleInputLineReader.readLine();
     }
 }

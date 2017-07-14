@@ -11,5 +11,5 @@ import org.springframework.beans.factory.annotation.Qualifier;
 @Retention(RetentionPolicy.RUNTIME)
 @Qualifier
 public @interface InvoicePrinterQualifier {
-    PrinterType printerType();
+    InvoicePrinterType printerType();
 }

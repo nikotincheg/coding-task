@@ -1,7 +1,7 @@
 package com.onikitich;
 
-import java.util.Scanner;
-
+import com.onikitich.console.ConsoleInputLineReader;
+import com.onikitich.console.ConsoleOutputMessageWriter;
 import com.onikitich.predicate.EmptyInputDataPredicate;
 import com.onikitich.predicate.ExitCommandPredicate;
 import com.onikitich.predicate.NewCommandPredicate;
@@ -13,21 +13,22 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SupermarketCheckoutMachine {
 
-    private final Scanner consoleInputScanner;
+    private final ConsoleInputLineReader consoleInputLineReader;
+    private final ConsoleOutputMessageWriter consoleOutputMessageWriter;
     private final PurchasesProcessor purchasesProcessor;
 
     public void start() {
-        System.out.printf("%nSupermarket checkout machine is working!%n");
+        consoleOutputMessageWriter.writeFormattedMessage("%nSupermarket checkout machine is working!%n");
         while (true) {
-            System.out.println("Please enter 'NEW' command to start new purchases process or 'EXIT' to shutdown the checkout machine:");
-            String command = consoleInputScanner.nextLine();
+            consoleOutputMessageWriter.writeInfoMessage("Please enter 'NEW' command to start new purchases process or 'EXIT' to shutdown the checkout machine:");
+            String command = consoleInputLineReader.readLine();
             if (EmptyInputDataPredicate.INST.test(command)) {
-                System.err.println("Empty command!");
+                consoleOutputMessageWriter.writeErrorMessage("Empty command!");
                 continue;
             }
 
             if (ExitCommandPredicate.INST.test(command)) {
-                System.out.println("Shutdown the checkout machine...");
+                consoleOutputMessageWriter.writeInfoMessage("Shutdown the checkout machine...");
                 return;
             }
 
@@ -35,7 +36,7 @@ public class SupermarketCheckoutMachine {
                 purchasesProcessor.startPurchasesProcess();
                 continue;
             }
-            System.err.println("Unknown command!");
+            consoleOutputMessageWriter.writeErrorMessage("Unknown command!");
         }
     }
 }

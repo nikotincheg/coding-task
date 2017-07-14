@@ -8,3 +8,4 @@ Additional information:
 2. Used maven version - 3.3.9
 3. Lombok plugin is required to correct work with the project in IntelliJ IDEA
 4. Only several classes were covered by tests - just for example
+5. Further code improvements are possible

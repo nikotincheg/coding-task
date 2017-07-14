@@ -2,44 +2,49 @@ package com.onikitich.printer;
 
 import java.time.format.DateTimeFormatter;
 
+import com.onikitich.console.ConsoleOutputMessageWriter;
 import com.onikitich.invoice.Invoice;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import static com.onikitich.printer.PrinterType.CONSOLE;
+import static com.onikitich.printer.InvoicePrinterType.CONSOLE;
 
 @Component
 @InvoicePrinterQualifier(printerType = CONSOLE)
+@RequiredArgsConstructor
 public class ConsoleInvoicePrinter implements InvoicePrinter {
+
+    private final ConsoleOutputMessageWriter consoleOutputMessageWriter;
 
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     @Override
     public void printInvoice(Invoice invoice) {
         if (invoice.getItemList().isEmpty()) {
-            System.out.println("Can't print invoice for empty purchases list!");
+            consoleOutputMessageWriter.writeInfoMessage("Can't print invoice for empty purchases list!");
             return;
         }
 
-        System.out.printf(
+        consoleOutputMessageWriter.writeFormattedMessage(
                 "%nInvoice #%s. Date: %s%n",
                 invoice.getInvoiceNumber(),
                 dateTimeFormatter.format(invoice.getDateTime())
         );
-        System.out.println("Product list:");
-        System.out.println("---------------------------------------------------------------");
+        consoleOutputMessageWriter.writeInfoMessage("Product list:");
+        consoleOutputMessageWriter.writeInfoMessage("---------------------------------------------------------------");
 
         invoice.getItemList().forEach(item -> {
-            System.out.printf(
+            consoleOutputMessageWriter.writeFormattedMessage(
                     "Name: '%s', price for %s item(s): %s%n",
                     item.getProductName(),
                     item.getCount(),
                     item.getPrice());
 
             if (item.getDiscount() > 0) {
-                System.out.printf("With special offer you saved: %s%n", item.getDiscount());
+                consoleOutputMessageWriter.writeFormattedMessage("With special offer you saved: %s%n", item.getDiscount());
             }
-            System.out.println("---------------------------------------------------------------");
+            consoleOutputMessageWriter.writeInfoMessage("---------------------------------------------------------------");
         });
-        System.out.printf("Total price: %s%n%n", invoice.getTotalPrice());
+        consoleOutputMessageWriter.writeFormattedMessage("Total price: %s%n%n", invoice.getTotalPrice());
     }
 }

@@ -1,6 +1,5 @@
 package com.onikitich.config;
 
-import java.util.Scanner;
 import javax.sql.DataSource;
 
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -38,10 +37,5 @@ public class AppConfig {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         return sessionFactory;
-    }
-
-    @Bean
-    public Scanner consoleInputScanner() {
-        return new Scanner(System.in);
     }
 }
