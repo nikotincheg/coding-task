@@ -1,6 +1,6 @@
 package com.onikitich.invoice.calculator;
 
-import com.onikitich.ShoppingCart;
+import com.onikitich.purchase.ShoppingCart;
 import com.onikitich.invoice.Invoice;
 import com.onikitich.invoice.InvoiceItem;
 import com.onikitich.invoice.InvoiceNumberGenerator;

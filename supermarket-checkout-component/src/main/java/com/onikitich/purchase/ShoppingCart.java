@@ -1,4 +1,4 @@
-package com.onikitich;
+package com.onikitich.purchase;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

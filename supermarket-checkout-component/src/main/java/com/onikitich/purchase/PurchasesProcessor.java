@@ -1,4 +1,4 @@
-package com.onikitich;
+package com.onikitich.purchase;
 
 import javax.inject.Provider;
 
