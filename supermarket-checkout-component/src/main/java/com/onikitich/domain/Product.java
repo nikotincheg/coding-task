@@ -13,5 +13,5 @@ public class Product {
     private String code;
     private String name;
     private Double price;
-    private Offer offer;
+    private SpecialOffer specialOffer;
 }

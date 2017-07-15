@@ -1,10 +1,8 @@
 package com.onikitich;
 
-import com.onikitich.console.ConsoleInputLineReader;
-import com.onikitich.console.ConsoleOutputMessageWriter;
-import com.onikitich.predicate.EmptyInputDataPredicate;
-import com.onikitich.predicate.ExitCommandPredicate;
-import com.onikitich.predicate.NewCommandPredicate;
+import com.onikitich.io.InputDataReader;
+import com.onikitich.io.OutputDataWriter;
+import com.onikitich.predicate.CommandIdentifierPredicate;
 import com.onikitich.purchase.PurchasesProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,30 +11,31 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SupermarketCheckoutMachine {
 
-    private final ConsoleInputLineReader consoleInputLineReader;
-    private final ConsoleOutputMessageWriter consoleOutputMessageWriter;
+    private final InputDataReader inputDataReader;
+    private final OutputDataWriter outputDataWriter;
     private final PurchasesProcessor purchasesProcessor;
 
     public void start() {
-        consoleOutputMessageWriter.writeFormattedMessage("%nSupermarket checkout machine is working!%n");
+        outputDataWriter.writeFormattedMessage("%nSupermarket checkout machine is working!%n");
         while (true) {
-            consoleOutputMessageWriter.writeInfoMessage("Please enter 'NEW' command to start new purchases process or 'EXIT' to shutdown the checkout machine:");
-            String command = consoleInputLineReader.readLine();
-            if (EmptyInputDataPredicate.INST.test(command)) {
-                consoleOutputMessageWriter.writeErrorMessage("Empty command!");
+            outputDataWriter.writeInfoMessage("Please enter 'NEW' to start new purchases process or 'EXIT' to shutdown the checkout machine:");
+
+            String command = inputDataReader.readLine();
+            if (CommandIdentifierPredicate.EMPTY.test(command)) {
+                outputDataWriter.writeErrorMessage("Empty command!");
                 continue;
             }
 
-            if (ExitCommandPredicate.INST.test(command)) {
-                consoleOutputMessageWriter.writeInfoMessage("Shutdown the checkout machine...");
+            if (CommandIdentifierPredicate.EXIT.test(command)) {
+                outputDataWriter.writeInfoMessage("Shutdown the checkout machine...");
                 return;
             }
 
-            if (NewCommandPredicate.INST.test(command)) {
+            if (CommandIdentifierPredicate.NEW.test(command)) {
                 purchasesProcessor.startPurchasesProcess();
                 continue;
             }
-            consoleOutputMessageWriter.writeErrorMessage("Unknown command!");
+            outputDataWriter.writeErrorMessage("Unknown command!");
         }
     }
 }

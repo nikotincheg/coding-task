@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Offer {
+public class SpecialOffer {
 
     private Integer id;
     private Double specialPrice;

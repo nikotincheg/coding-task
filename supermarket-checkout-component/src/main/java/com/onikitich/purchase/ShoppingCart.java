@@ -19,12 +19,7 @@ public class ShoppingCart {
     private Map<Product, AtomicInteger> purchasesMap = new LinkedHashMap<>();
 
     public void addProduct(Product product) {
-        AtomicInteger itemsCounter = purchasesMap.get(product);
-        if (itemsCounter == null) {
-            itemsCounter = new AtomicInteger(1);
-            purchasesMap.put(product, itemsCounter);
-        } else {
-            itemsCounter.getAndIncrement();
-        }
+        AtomicInteger itemsCounter = purchasesMap.computeIfAbsent(product, p -> new AtomicInteger(0));
+        itemsCounter.getAndIncrement();
     }
 }

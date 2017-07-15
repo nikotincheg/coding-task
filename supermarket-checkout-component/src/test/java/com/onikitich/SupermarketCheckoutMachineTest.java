@@ -1,7 +1,7 @@
 package com.onikitich;
 
-import com.onikitich.console.ConsoleInputLineReader;
-import com.onikitich.console.ConsoleOutputMessageWriter;
+import com.onikitich.io.InputDataReader;
+import com.onikitich.io.OutputDataWriter;
 import com.onikitich.purchase.PurchasesProcessor;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,9 +19,9 @@ import static org.mockito.Mockito.when;
 public class SupermarketCheckoutMachineTest {
 
     @Mock
-    private ConsoleInputLineReader consoleInputLineReader;
+    private InputDataReader inputDataReader;
     @Mock
-    private ConsoleOutputMessageWriter consoleOutputMessageWriter;
+    private OutputDataWriter outputDataWriter;
     @Mock
     private PurchasesProcessor purchasesProcessor;
 
@@ -29,52 +29,52 @@ public class SupermarketCheckoutMachineTest {
 
     @Before
     public void init() {
-        supermarketCheckoutMachine = new SupermarketCheckoutMachine(consoleInputLineReader, consoleOutputMessageWriter, purchasesProcessor);
+        supermarketCheckoutMachine = new SupermarketCheckoutMachine(inputDataReader, outputDataWriter, purchasesProcessor);
     }
 
     @Test
     public void whenStartAndEnterEmptyCommandThenEmptyCommandErrorMessageShouldBeShown() {
-        when(consoleInputLineReader.readLine()).thenReturn("", "EXIT");
+        when(inputDataReader.readLine()).thenReturn("", "EXIT");
 
         supermarketCheckoutMachine.start();
 
-        verify(consoleInputLineReader, times(2)).readLine();
-        verify(consoleOutputMessageWriter).writeErrorMessage("Empty command!");
-        verifyNoMoreInteractions(consoleInputLineReader);
+        verify(inputDataReader, times(2)).readLine();
+        verify(outputDataWriter).writeErrorMessage("Empty command!");
+        verifyNoMoreInteractions(inputDataReader);
         verifyZeroInteractions(purchasesProcessor);
     }
 
     @Test
     public void whenStartAndEnterExitCommandThenCheckoutMachineShouldBeShutdownAndAppropriateMessageShouldBeShown() {
-        when(consoleInputLineReader.readLine()).thenReturn("EXIT");
+        when(inputDataReader.readLine()).thenReturn("EXIT");
 
         supermarketCheckoutMachine.start();
 
-        verify(consoleInputLineReader).readLine();
-        verify(consoleOutputMessageWriter).writeInfoMessage("Shutdown the checkout machine...");
-        verifyNoMoreInteractions(consoleInputLineReader);
+        verify(inputDataReader).readLine();
+        verify(outputDataWriter).writeInfoMessage("Shutdown the checkout machine...");
+        verifyNoMoreInteractions(inputDataReader);
         verifyZeroInteractions(purchasesProcessor);
     }
 
     @Test
     public void whenStartAndEnterIncorrectCommandThenUnknownCommandMessageShouldBeShown() {
-        when(consoleInputLineReader.readLine()).thenReturn("Bad command", "EXIT");
+        when(inputDataReader.readLine()).thenReturn("Bad command", "EXIT");
 
         supermarketCheckoutMachine.start();
 
-        verify(consoleInputLineReader, times(2)).readLine();
-        verify(consoleOutputMessageWriter).writeErrorMessage("Unknown command!");
-        verifyNoMoreInteractions(consoleInputLineReader);
+        verify(inputDataReader, times(2)).readLine();
+        verify(outputDataWriter).writeErrorMessage("Unknown command!");
+        verifyNoMoreInteractions(inputDataReader);
         verifyZeroInteractions(purchasesProcessor);
     }
 
     @Test
     public void whenStartEndEnterNewCommandThenNewPurchasesProcessShouldBeStarted() {
-        when(consoleInputLineReader.readLine()).thenReturn("NEW", "EXIT");
+        when(inputDataReader.readLine()).thenReturn("NEW", "EXIT");
 
         supermarketCheckoutMachine.start();
-        verify(consoleInputLineReader, times(2)).readLine();
+        verify(inputDataReader, times(2)).readLine();
         verify(purchasesProcessor).startPurchasesProcess();
-        verifyNoMoreInteractions(consoleInputLineReader, purchasesProcessor);
+        verifyNoMoreInteractions(inputDataReader, purchasesProcessor);
     }
 }

@@ -19,7 +19,7 @@ public class InvoiceCalculator {
         Invoice invoice = new Invoice();
         invoice.setDateTime(now());
         invoice.setInvoiceNumber(InvoiceNumberGenerator.INST.generate());
-        invoice.setTotalPrice(0);
+        invoice.setTotalPrice(0d);
 
         shoppingCart.getPurchasesMap().forEach((product, itemsCounter) -> {
             InvoiceItem invoiceItem = invoiceItemCalculator.calculate(product, itemsCounter);

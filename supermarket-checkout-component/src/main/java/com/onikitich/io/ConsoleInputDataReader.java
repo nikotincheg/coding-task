@@ -1,11 +1,11 @@
-package com.onikitich.console;
+package com.onikitich.io;
 
 import java.util.Scanner;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class ConsoleInputLineReader {
+public class ConsoleInputDataReader implements InputDataReader {
 
     private final Scanner scanner = new Scanner(System.in);
 
